@@ -24,6 +24,22 @@ section{padding:64px 0}.section-title{text-align:center;margin-bottom:35px}.sect
 .flow{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-top:25px}.flow span{padding:10px 14px;border-radius:10px;background:#10263d;border:1px solid #264b68;font-size:14px}.arrow{color:var(--accent);font-weight:800}
 footer{border-top:1px solid var(--line);padding:35px 0;text-align:center;color:var(--muted)}.disclaimer{font-size:13px;color:#8fa7bb;margin-top:12px}
 @media(max-width:800px){.grid,.problem,.states{grid-template-columns:1fr}.steps{grid-template-columns:repeat(2,1fr)}nav a{display:none}}@media(max-width:480px){.steps{grid-template-columns:1fr}}
+
+.simulator{display:grid;grid-template-columns:1.35fr .65fr;gap:20px}
+.sim-stage{position:relative;min-height:430px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:radial-gradient(circle at 50% 45%,#173858 0,#0b2035 35%,#061321 75%)}
+.grid-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(76,201,240,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(76,201,240,.08) 1px,transparent 1px);background-size:42px 42px;transform:perspective(500px) rotateX(55deg) scale(1.5);transform-origin:center bottom}
+.zone{position:absolute;left:50%;bottom:50px;transform:translateX(-50%);width:230px;height:110px;border:2px dashed var(--green);border-radius:50%;box-shadow:0 0 35px rgba(66,230,149,.15);display:flex;align-items:center;justify-content:center;color:var(--green);font-weight:800}
+.drone{position:absolute;left:50%;top:90px;transform:translateX(-50%);font-size:64px;filter:drop-shadow(0 0 18px rgba(76,201,240,.6));animation:hoverDrone 2.8s ease-in-out infinite}
+.beam{position:absolute;left:50%;top:160px;transform:translateX(-50%);width:120px;height:190px;background:linear-gradient(180deg,rgba(76,201,240,.18),rgba(76,201,240,0));clip-path:polygon(35% 0,65% 0,100% 100%,0 100%);pointer-events:none}
+.person{position:absolute;left:28%;bottom:78px;font-size:40px}
+.car{position:absolute;right:14%;bottom:80px;font-size:42px}
+.warning{position:absolute;right:10%;top:80px;padding:10px 14px;border:1px solid var(--yellow);border-radius:12px;background:rgba(255,209,102,.1);color:var(--yellow);font-weight:700}
+.panel{background:linear-gradient(145deg,var(--card),#091726);border:1px solid var(--line);border-radius:20px;padding:22px}
+.panel h3{margin-bottom:15px}.metric{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);color:var(--muted)}.metric strong{color:var(--text)}
+.status-live{margin:18px 0;padding:14px;border-radius:14px;background:rgba(66,230,149,.08);border:1px solid rgba(66,230,149,.35);color:var(--green);font-weight:800;text-align:center}
+.sim-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}.sim-buttons button{padding:10px;border:1px solid var(--line);background:#10243b;color:var(--text);border-radius:10px;cursor:pointer;font-weight:700}.sim-buttons button:hover{border-color:var(--accent)}
+@keyframes hoverDrone{50%{transform:translate(-50%,10px)}}
+@media(max-width:800px){.simulator{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -58,10 +74,22 @@ footer{border-top:1px solid var(--line);padding:35px 0;text-align:center;color:v
 <div class="flow"><span>📷 Camera</span><b class="arrow">→</b><span>🧠 AI Vision</span><b class="arrow">→</b><span>⚠️ Hazard Detection</span><b class="arrow">→</b><span>🛡️ Safety Decision</span><b class="arrow">→</b><span>👤 Recipient Guidance</span></div>
 </div></section>
 
-<section id="simulation"><div class="container"><div class="section-title"><h2>Prototype Concept & Simulation</h2><p>Visual representation of the proposed system.</p></div>
-<div class="media" style="margin-bottom:20px"><img src="concept.png" alt="HazardGuard Drone Concept Image"></div>
-<div class="media"><video controls poster="concept.png" preload="metadata"><source src="تنزيل.mp4" type="video/mp4">Your browser does not support the video tag.</video></div>
-</div></section>
+<section id="simulation"><div class="container"><div class="section-title"><h2>Interactive Safety Simulation</h2><p>A browser-based visual prototype of the proposed HazardGuard safety decision layer.</p></div>
+<div class="simulator">
+<div class="sim-stage">
+<div class="grid-lines"></div><div class="warning">⚠ Dynamic environment monitoring</div><div class="beam"></div><div class="drone">🚁</div><div class="person">🧍</div><div class="car">🚗</div><div class="zone" id="zone">SAFE COLLECTION ZONE</div>
+</div>
+<div class="panel">
+<h3>🛡️ Safety Control Center</h3>
+<div class="status-live" id="status">● SAFE — COLLECTION ALLOWED</div>
+<div class="metric"><span>People detected</span><strong id="people">1</strong></div>
+<div class="metric"><span>Obstacles</span><strong id="obstacles">0</strong></div>
+<div class="metric"><span>Risk level</span><strong id="risk">LOW</strong></div>
+<div class="metric"><span>Delivery action</span><strong id="action">PROCEED</strong></div>
+<div class="sim-buttons">
+<button onclick="setScenario('safe')">SAFE</button><button onclick="setScenario('wait')">WAIT</button><button onclick="setScenario('stop')">STOP</button>
+</div>
+</div></div></div></section>
 
 <section><div class="container"><div class="section-title"><h2>Expected Results</h2><p>What the proposed system aims to achieve.</p></div>
 <div class="grid"><div class="card"><h3>Safer Interaction</h3><p>Reduce unsafe human–drone interactions during residential package collection.</p></div><div class="card"><h3>Dynamic Detection</h3><p>Identify changing hazards around the delivery area before and during collection.</p></div><div class="card"><h3>Controlled Delivery</h3><p>Temporarily pause delivery when unsafe conditions are detected.</p></div></div></div></section>
@@ -73,5 +101,12 @@ footer{border-top:1px solid var(--line);padding:35px 0;text-align:center;color:v
 <div class="card"><ol style="padding-left:22px;color:var(--muted)"><li>General Authority of Civil Aviation (GACA), Saudi Arabia — Drone regulations and operations.</li><li>KAUST — Autonomous Drone Delivery Research.</li><li>FalconViz — Autonomous Delivery Solutions.</li><li>Amazon Prime Air — Drone Delivery Safety and Technology.</li><li>Research literature on human–drone interaction and vision-based safe landing systems.</li></ol></div></div></section>
 
 <footer><div class="container"><strong>HazardGuard Drone</strong><br>Wijdan Yahya Al-Khabrani · Occupational Health & Safety · Saudi Arabia 🇸🇦<div class="disclaimer">This is a proposed concept / preliminary prototype design. The simulation illustrates the intended workflow and does not claim that the complete system has already been implemented or deployed.</div></div></footer>
-</body>
+<script>
+function setScenario(mode){
+const status=document.getElementById('status'),risk=document.getElementById('risk'),action=document.getElementById('action'),people=document.getElementById('people'),obstacles=document.getElementById('obstacles'),zone=document.getElementById('zone');
+if(mode==='safe'){status.textContent='● SAFE — COLLECTION ALLOWED';status.style.color='var(--green)';status.style.borderColor='rgba(66,230,149,.35)';risk.textContent='LOW';action.textContent='PROCEED';people.textContent='1';obstacles.textContent='0';zone.style.borderColor='var(--green)';zone.style.color='var(--green)';}
+if(mode==='wait'){status.textContent='● WAIT — KEEP RECIPIENT OUTSIDE';status.style.color='var(--yellow)';status.style.borderColor='rgba(255,209,102,.4)';risk.textContent='MEDIUM';action.textContent='HOLD';people.textContent='2';obstacles.textContent='1';zone.style.borderColor='var(--yellow)';zone.style.color='var(--yellow)';}
+if(mode==='stop'){status.textContent='● STOP — DELIVERY PAUSED';status.style.color='var(--red)';status.style.borderColor='rgba(255,92,122,.45)';risk.textContent='HIGH';action.textContent='ABORT';people.textContent='3';obstacles.textContent='2';zone.style.borderColor='var(--red)';zone.style.color='var(--red)';}
+}
+</script></body>
 </html>
